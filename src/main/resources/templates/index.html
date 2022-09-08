@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue/3.2.36/vue.global.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+</head>
+<body>
+<div id="registerForm">
+    <label>
+        <input type="text" placeholder="姓名" v-model="name">
+    </label><br>
+    <label>
+        <input type="text" placeholder="学号" v-model="studentId">
+    </label><br>
+
+    <label>
+        <select v-model="gender">
+            <option value="0">男</option>
+            <option value="1">女</option>
+        </select>
+    </label><br>
+    <label>
+        <input type="text" placeholder="密码" v-model="password">
+    </label><br>
+
+    <input type="button" v-on:click="passRequest" value="提交">
+    <p>
+        {{info}}
+    </p>
+</div>
+
+
+<script>
+    // function passRequest(){
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "/StudentLogin",
+    //         contentType: 'application/x-www-form-urlencoded;charset=utf-8',
+    //         data: {studentId:'U202142008',name:'敖立鑫',gender:1,password:'123456'},
+    //         dataType: "json",
+    //         success: function(data){
+    //             alert(data)
+    //             console.log("response成功");
+    //         },
+    //         error:function(e){
+    //             console.log(e);
+    //         }
+    //     });
+    // }
+
+    const passRequestApp = {
+        data() {
+            return {
+                info: null,
+                name: null,
+                studentId: null,
+                gender: 0,
+                password: null
+            }
+        },
+        methods: {
+            passRequest() {
+                axios.post('/StudentLogin', {
+                    name: this.name,
+                    studentId: this.studentId,
+                    gender: this.gender,
+                    password: this.password
+
+                })
+                    .then(response => (this.info = response.data))
+                    .catch(function (error) { //请求失败
+                        alert(error);
+                    });
+            }
+        }
+    }
+    Vue.createApp(passRequestApp).mount('#registerForm')
+</script>
+</body>
+</html>
